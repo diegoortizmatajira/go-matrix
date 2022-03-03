@@ -56,7 +56,7 @@ func getShadedColor(currentColor byte, shadingDelta byte) byte {
 }
 
 func (s *Stream) Advance(screenHeight int) bool {
-	if rand.Float32() < 0.1 { // Remains static on 10% of the times
+	if rand.Float32() < 0.3 { // Remains static on 10% of the times
 		return true
 	}
 	s.Head++

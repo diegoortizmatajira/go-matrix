@@ -22,7 +22,7 @@ func Paint(screenMap *ScreenMap) {
 		}
 	}
 	termbox.Flush()
-	time.Sleep(30 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 }
 
 func main() {
@@ -36,7 +36,7 @@ func main() {
 	termbox.SetInputMode(termbox.InputEsc)
 	termbox.Clear(termbox.ColorGreen, background)
 
-	output := make(chan *ScreenMap, 20)
+	output := make(chan *ScreenMap, 3)
 	w, h := termbox.Size()
 	matrix := NewMatrix(w/spacing, h)
 	go matrix.Produce(output)
