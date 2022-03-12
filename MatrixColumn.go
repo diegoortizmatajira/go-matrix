@@ -2,7 +2,6 @@ package main
 
 import (
 	"math/rand"
-	"sync"
 )
 
 type MatrixColumn struct {
@@ -88,12 +87,11 @@ func (c *MatrixColumn) EnsureStreams() {
 	c.Streams = remainingStreams
 }
 
-func (c *MatrixColumn) Update(waitGroup *sync.WaitGroup) {
+func (c *MatrixColumn) Update() {
 	for row := 0; row < c.height; row++ {
 		c.Colors[row] = getShadedColor(c.Colors[row], c.shadingDelta)
 	}
 	c.EnsureStreams()
-	waitGroup.Done()
 }
 
 func (c *MatrixColumn) ProjectVisualization(screenMap *ScreenMap) {

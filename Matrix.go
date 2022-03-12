@@ -1,9 +1,5 @@
 package main
 
-import (
-	"sync"
-)
-
 type Matrix struct {
 	Columns []*MatrixColumn
 	width   int
@@ -22,20 +18,25 @@ func NewMatrix(w, h int) *Matrix {
 	}
 }
 
+func (m *Matrix) Animate() {
+	// Updates the matrix
+	for _, v := range m.Columns {
+		v.Update()
+	}
+}
+
+func (m *Matrix) ProjectVisualization() *ScreenMap {
+	// Projects the resulting matrix
+	result := NewScreenMap(m.width, m.height)
+	for _, v := range m.Columns {
+		v.ProjectVisualization(result)
+	}
+	return result
+}
+
 func (m *Matrix) Produce(output chan *ScreenMap) {
 	for {
-		// Updates the matrix
-		waitGroup := &sync.WaitGroup{}
-		waitGroup.Add(m.width)
-		for _, v := range m.Columns {
-			go v.Update(waitGroup)
-		}
-		waitGroup.Wait()
-		// Projects the resulting matrix
-		result := NewScreenMap(m.width, m.height)
-		for _, v := range m.Columns {
-			v.ProjectVisualization(result)
-		}
-		output <- result
+		m.Animate()
+		output <- m.ProjectVisualization()
 	}
 }
